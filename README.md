@@ -29,7 +29,7 @@ npm run preview
 
 ## Content
 
-- `src/pages/`: landing, Ink, Frame, downloads, and guide pages.
+- `src/pages/`: compact installation pages, downloads, and guides.
 - `src/data/guides.ts`: nine public setup and support guides.
 - `src/data/releases.json`: current verified public releases. A `null` product shows a clear unavailable state, not a fabricated download.
 - `public/firmware/`: only explicitly staged, versioned EE04 merged firmware and ESP Web Tools manifests.

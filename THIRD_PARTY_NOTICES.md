@@ -5,6 +5,6 @@
 - **Astro**. MIT. https://github.com/withastro/astro. Static website build tool.
 - **Wrangler**. Apache License 2.0 / MIT as declared by its distribution. https://github.com/cloudflare/workers-sdk. Deployment tooling, not application hosting code.
 
-Hearthboard branding, original website copy, layout, and dashboard illustrations are JudeWorks materials. The dashboard illustrations use invented sample content and CSS; they are not photographs or captures of a household's private data.
+Hearthboard branding, original website copy, and layout are JudeWorks materials.
 
 Android APK and ESP32 firmware downloads must ship with their own applicable third-party notices. The notices above apply to this website, not all dependencies included in either private application.

@@ -1,17 +1,15 @@
 ---
 import '../styles/global.css';
-import { navigation, repository } from '../data/site';
-import Icon from '../components/Icon.astro';
+import { repository } from '../data/site';
 interface Props { title?: string; description?: string; }
-const { title = 'A little more home. | Hearthboard Displays', description = 'Meet Hearthboard Ink and Hearthboard Frame. Install, connect, and make a supported e-paper board or Android photo frame part of your home.' } = Astro.props;
-const current = Astro.url.pathname;
+const { title = 'Hearthboard Displays', description = 'Install and set up Hearthboard Ink on an e-paper board or Hearthboard Frame on an Android photo frame.' } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f6f2" />
+    <meta name="theme-color" content="#ffffff" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
@@ -19,19 +17,15 @@ const current = Astro.url.pathname;
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="/assets/hearthboard-icon.png" />
     <link rel="preload" href="/assets/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="canonical" href={new URL(current, Astro.site)} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="/" aria-label="Hearthboard Displays home"><img src="/assets/hearthboard-icon.png" alt="" width="35" height="35" /><span>hearthboard<span class="brand-sub">displays</span></span></a>
-        <nav aria-label="Main navigation">{navigation.map(link => <a href={link.href} aria-current={current.startsWith(link.href) ? 'page' : undefined}>{link.label}</a>)}</nav>
-        <a class="header-help" href="/docs/">Get started <Icon name="arrow" size={15}/></a>
-        <details class="mobile-menu"><summary>Menu <span aria-hidden="true">☰</span></summary><nav aria-label="Mobile navigation">{navigation.map(link => <a href={link.href} aria-current={current.startsWith(link.href) ? 'page' : undefined}>{link.label}</a>)}</nav></details>
-      </div>
+    <header class="site-header container">
+      <a class="brand" href="/">Hearthboard <span>Displays</span></a>
+      <nav aria-label="Main navigation"><a href="/" aria-current={['/','/ink/','/frame/'].includes(Astro.url.pathname) ? 'page' : undefined}>Install</a><a href="/docs/" aria-current={Astro.url.pathname.startsWith('/docs/') ? 'page' : undefined}>Guides</a></nav>
     </header>
     <main id="main"><slot /></main>
-    <footer class="site-footer"><div class="container footer-top"><div><a class="brand footer-brand" href="/">hearthboard<span class="footer-dot">.</span></a><p>A place for the little things<br />that make a home.</p></div><div class="footer-links"><a href="/ink/">Hearthboard Ink</a><a href="/frame/">Hearthboard Frame</a><a href="/docs/">Setup & support</a></div><div class="footer-links"><a href="/releases/">Downloads & releases</a><a href={repository}>Public project <span aria-hidden="true">↗</span></a><a href="/docs/privacy/">Privacy & notices</a></div></div><div class="container footer-bottom"><span>© {new Date().getUTCFullYear()} JudeWorks · Made for your home.</span><span>Ink + Frame. One Hearthboard.</span></div></footer>
+    <footer class="site-footer container"><span>© {new Date().getUTCFullYear()} JudeWorks</span><nav aria-label="Footer"><a href="/releases/">Releases</a><a href={repository}>GitHub</a><a href="/docs/privacy/">Privacy & notices</a></nav></footer>
   </body>
 </html>
