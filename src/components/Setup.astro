@@ -1,6 +1,7 @@
 ---
 import Installer from './Installer.astro';
 import Icon from './Icon.astro';
+import { appStoreURL } from '../data/site';
 import { releases, formatBytes } from '../data/releases';
 interface Props { product?: 'ink' | 'frame'; }
 const { product = 'ink' } = Astro.props;
@@ -15,10 +16,11 @@ const frame = releases.frame;
     <details class="setup-details"><summary>Supported boards and recovery</summary><p>The initial target is the <strong>TRMNL 7.5″ DIY kit / Seeed EE04</strong>, with XIAO ESP32-S3 Plus and an 800 × 480 monochrome panel. E1001 and E1002 images aren't available. Other ESP32-S3 boards need their own firmware.</p><p>If a board doesn't appear over USB, try a data cable, close serial monitors, and press a board button to wake it. Hold Right for five seconds to reopen pairing, or Left + Right for ten seconds to forget Wi-Fi.</p><a href="/docs/ink-recovery/">Recovery guide →</a></details>
   </section> : <section aria-label="Hearthboard Frame setup">
     <div class="install-panel" id="download"><div class="panel-heading"><h2>Download the Android app</h2><span class="pill">Beta</span></div><p>Install the APK on your frame, then pair it with Hearthboard on your iPhone.</p>
-    {frame ? <><a class="button primary" href={frame.downloadURL}><Icon name="download" size={17}/>Download APK · {frame.version}</a><p class="download-meta">{formatBytes(frame.size)} · Android API {frame.minSdk}+ · Version code {frame.versionCode}</p><p class="download-meta">SHA-256: <code>{frame.sha256}</code></p><a href="/releases/">Release notes</a></> : <div class="notice"><strong>No public APK yet</strong><p>The first signed beta will appear here after release verification.</p></div>}
+    {frame ? <><a class="button primary" href={frame.downloadURL}><Icon name="download" size={17}/>Download APK · {frame.version}</a><p class="download-meta">{formatBytes(frame.size)} · Android API {frame.minSdk}+ · Version code {frame.versionCode}</p><p class="download-meta">SHA-256: <code>{frame.sha256}</code></p><a href="/releases/">Release notes</a></> : <div class="notice"><strong>Coming soon</strong><p>Hearthboard Frame is on its way. The Android app will be available here when it's ready.</p></div>}
     <div class="requirements"><span>Android 6.0+ is the current app target.</span><span>Your frame must allow APK installation.</span><span>Brightness, motion, and reboot support vary by device.</span></div><a class="inline-link" href="/docs/frame-compatibility/">Check frame compatibility →</a></div>
     <details class="setup-details"><summary>How to install and pair</summary><ol><li>Download on the frame, or copy the APK using microSD or USB.</li><li>Allow APK installation for the browser or Files app you use. On Android 6 or 7, this is usually Settings → Security → Unknown sources.</li><li>Install and open Hearthboard Frame. Connect the frame and your iPhone to the same home network.</li><li>Open Hearthboard on the iPhone, select the frame, and compare and confirm the six pairing digits.</li><li>Set Hearthboard as the Home app where supported, then check it opens after a reboot.</li></ol><a href="/docs/frame-install/">Full installation guide →</a></details>
     <details class="setup-details"><summary>Compatibility and updating an existing installation</summary><p>Check the exact Android version and firmware. Some stock photo-frame launchers hide settings or block APK installation. The PF1007L development unit required device-specific provisioning; that doesn't establish support for every frame with the same name.</p><p>A public release must use the correct package and signing identity to update in place. Don't uninstall a working development build just to bypass a signing mismatch: it can remove settings and pairings.</p><a href="/docs/updates/">Update guide →</a></details>
   </section>}
+  <p class="ipad-app-link">Hearthboard for iPad is available now.<br /><a href={appStoreURL}>View on the App Store <span aria-hidden="true">↗</span></a></p>
   <p class="setup-help">Need help? <a href="/docs/troubleshooting/">Troubleshooting</a><span aria-hidden="true"> · </span><a href="/docs/">All guides</a></p>
 </div>

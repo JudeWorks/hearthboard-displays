@@ -6,3 +6,5 @@ export const navigation = [
   { href: '/docs/', label: 'Guides' },
   { href: '/releases/', label: 'Downloads' },
 ];
+
+export const appStoreURL = 'https://apps.apple.com/app/hearthboard-home-dashboard/id6751168104';

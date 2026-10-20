@@ -141,3 +141,6 @@ pre code{padding:0;overflow-wrap:normal}
  .prose h2{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.ipad-app-link{font-size:12px;line-height:1.9;color:#6d7868;margin:25px 0 0}
+.ipad-app-link a{display:inline-block;color:#326c56;font-weight:550;min-height:30px}
