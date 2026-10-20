@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.DS_Store
+.env
+.env.*
+*.keystore
+*.jks
+*.pem
+*.key
+*.apk
+*.bin
+!public/firmware/**/*.bin

@@ -1,0 +1,40 @@
+---
+import { releases } from '../data/releases';
+import Icon from './Icon.astro';
+const release = releases.ink;
+---
+<div class="install-panel" id="installer">
+  <div class="eyebrow">THE INK INSTALLER</div><h3 style="margin-top:12px">A fresh start, over USB.</h3>
+  <p class="small">Use a USB data cable and desktop Chrome or Edge. After installation, connect Wi-Fi using the instructions on your display.</p>
+  <label class="form-label" for="board">Your e-paper board</label>
+  <select id="board" name="board"><option value="ee04">TRMNL 7.5″ DIY kit · Seeed EE04 / ESP32-S3 Plus</option><option value="e1001" disabled>reTerminal E1001 — not available yet</option><option value="e1002" disabled>reTerminal E1002 — not available yet</option></select>
+  {release ? <>
+    <div class="notice warning"><strong>Before you install</strong><p>This replaces the firmware on your board. A fresh installation can erase Wi-Fi, pairings, widgets, and service settings. Keep the manufacturer's recovery instructions handy.</p></div>
+    <label class="checkbox-label"><input id="install-consent" type="checkbox"/><span>I've checked my board is the Seeed EE04 DIY kit, and understand that installation can reset its saved settings.</span></label>
+    <div id="install-control" hidden><esp-web-install-button manifest={release.manifestPath}><button slot="activate" class="button primary">Install Hearthboard Ink <Icon name="usb" size={18}/></button><span slot="unsupported" class="small">Open this page in desktop Chrome or Edge to install over USB.</span><span slot="not-allowed" class="small">A secure HTTPS connection is needed to use the installer.</span></esp-web-install-button></div>
+    <button id="install-locked" class="button primary" disabled>Confirm your board above <Icon name="usb" size={18}/></button>
+    <p id="browser-support" class="release-state" role="status" aria-live="polite"></p><p class="download-meta">Version {release.version} · {release.channel} · <a href="/releases/">Release details & checksum</a></p>
+  </> : <>
+    <div class="notice"><strong>First public firmware coming soon</strong><p>The browser installer will be available here when the first verified release is published. No firmware is installed from this page yet.</p></div>
+    <a class="button outline" href="/docs/ink-setup/">Read the setup guide <Icon name="book" size={17}/></a>
+  </>}
+  <p class="small" style="margin-top:20px;margin-bottom:0">Already set up? <a class="privacy-link" href="/docs/ink-recovery/">Recovery & troubleshooting</a></p>
+</div>
+<script>
+  const consent = document.querySelector<HTMLInputElement>('#install-consent');
+  if (consent) {
+    const control = document.querySelector<HTMLElement>('#install-control');
+    const locked = document.querySelector<HTMLElement>('#install-locked');
+    const status = document.querySelector<HTMLElement>('#browser-support');
+    const supported = 'serial' in navigator && window.isSecureContext;
+    if (status) status.textContent = supported ? 'USB flashing happens directly between this browser and your board.' : 'Use desktop Chrome or Edge over HTTPS to flash your board. You can still read all guides here.';
+    consent.addEventListener('change', async () => {
+      if (control) control.hidden = !consent.checked || !supported;
+      if (locked) locked.hidden = consent.checked && supported;
+      if (consent.checked && supported && !customElements.get('esp-web-install-button')) {
+        try { await import('esp-web-tools/dist/web/install-button.js'); }
+        catch { if (status) status.textContent = 'The installer could not load. Check your connection and refresh this page.'; }
+      }
+    });
+  }
+</script>

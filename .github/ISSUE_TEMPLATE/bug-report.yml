@@ -1,0 +1,33 @@
+name: Display problem
+description: Report an Ink, Frame, or website issue.
+title: "[Product] Brief description"
+body:
+  - type: markdown
+    attributes:
+      value: "Public report: remove passwords, keys, pairing codes, personal content, serial numbers, and private network details. Never upload a complete backup."
+  - type: dropdown
+    id: product
+    attributes:
+      label: Product
+      options: [Hearthboard Ink, Hearthboard Frame, Website or documentation]
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Exact board or frame model
+  - type: input
+    id: version
+    attributes:
+      label: Hearthboard release and Android or firmware version
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you do, what did you expect, and what happened?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted screenshots or logs

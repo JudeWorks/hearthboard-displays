@@ -1,0 +1,12 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { validateRelease, inkManifest, validateInkImage, sha256 } from './release-lib.mjs';
+const ink = { version:'1.0.0-beta.1',channel:'beta',date:'2026-10-20',sha256:'a'.repeat(64),size:1800000,sourceCommit:'b'.repeat(40),notes:'Initial EE04 beta with USB installation and local pairing.',downloadURL:'https://github.com/JudeWorks/hearthboard-displays/releases/download/ink-v1.0.0-beta.1/hearthboard-ink-1.0.0-beta.1-ee04.bin',manifestPath:'/firmware/ink-v1.0.0-beta.1/manifest.json',board:'seeed-ee04' };
+const frame = { ...ink,downloadURL:'https://github.com/JudeWorks/hearthboard-displays/releases/download/frame-v1.0.0-beta.1/hearthboard-frame-1.0.0-beta.1.apk',versionCode:3,minSdk:23 };
+test('valid product release metadata identifies only the public binary asset',()=>{assert.equal(validateRelease('ink',ink).tag,'ink-v1.0.0-beta.1');assert.equal(validateRelease('frame',frame).filename,'hearthboard-frame-1.0.0-beta.1.apk');});
+test('arbitrary URLs, debug APK filenames and another product are rejected',()=>{for(const downloadURL of ['https://example.com/app.apk',frame.downloadURL.replace('hearthboard-frame-1.0.0-beta.1.apk','app-debug.apk'),ink.downloadURL]) assert.throws(()=>validateRelease('frame',{...frame,downloadURL}));});
+test('unknown boards and incorrect installer paths are rejected',()=>{assert.throws(()=>validateRelease('ink',{...ink,board:'e1002'}));assert.throws(()=>validateRelease('ink',{...ink,manifestPath:'https://other.test/manifest.json'}));});
+test('missing checksum, provenance, versionCode, or minimum Android are rejected',()=>{for(const patch of [{sha256:''},{sourceCommit:'abc'},{versionCode:0},{minSdk:22}])assert.throws(()=>validateRelease('frame',{...frame,...patch}));});
+test('Ink installer uses only an ESP32-S3 merged image at zero',()=>{assert.deepEqual(inkManifest(ink).builds,[{chipFamily:'ESP32-S3',parts:[{path:'hearthboard-ink-1.0.0-beta.1-ee04.bin',offset:0}]}]);});
+test('unmerged or non-S3 firmware cannot be staged',()=>{assert.throws(()=>validateInkImage(Buffer.alloc(1024)));const bytes=Buffer.alloc(0x10000+24);bytes[0]=bytes[0x10000]=0xe9;bytes.writeUInt16LE(9,12);bytes.writeUInt16LE(9,0x10000+12);bytes[0x8000]=0xaa;bytes[0x8001]=0x50;assert.doesNotThrow(()=>validateInkImage(bytes));bytes.writeUInt16LE(0,12);assert.throws(()=>validateInkImage(bytes));});
+test('SHA-256 is reproducible',()=>assert.equal(sha256(Buffer.from('abc')),'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'));

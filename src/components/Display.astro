@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+interface Props { kind: 'ink' | 'frame'; class?: string; }
+const { kind, class: className = '' } = Astro.props;
+---
+<div class:list={['display-device', kind, className]} role="img" aria-label={kind === 'ink' ? 'Illustrative Hearthboard Ink dashboard with a clock, weather, and a family checklist' : 'Illustrative Hearthboard Frame dashboard with weather, a landscape, and family plans'}>
+  <div class="device-camera"></div>
+  <div class="device-screen">
+    <div class="demo-top"><span>Good morning, home.</span><span>Tuesday, October 20</span></div>
+    <div class="demo-grid">
+      <div class="demo-clock"><span class="demo-small">A LITTLE TIME TO YOURSELF</span><strong>9<span>:</span>41</strong><span class="demo-date">A fresh start to the day.</span></div>
+      <div class="demo-weather"><Icon name="sun" size={32}/><strong>64°</strong><span>Sunny skies ahead</span><small>H 68° &nbsp; L 52°</small></div>
+      {kind === 'frame' ? <div class="demo-landscape"><span class="landscape-sun"></span><span class="landscape-hill hill-back"></span><span class="landscape-hill hill-front"></span><span class="landscape-caption">Somewhere you'd like to be.</span></div> : <div class="demo-note"><span class="demo-small">ON THE LITTLE LIST</span><p>○ &nbsp; Water the plants</p><p>○ &nbsp; Pick up something fresh</p><p>● &nbsp; Make time for a walk</p></div>}
+      <div class="demo-plans"><span class="demo-small">A FEW THINGS FOR TODAY</span><p><b>10:00</b><span>Coffee & a catch-up</span></p><p><b>3:30</b><span>A little time outside</span></p></div>
+    </div>
+  </div>
+  <div class="device-wordmark">hearthboard</div>
+</div>

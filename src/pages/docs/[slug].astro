@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import { guides } from '../../data/guides';
+import type { Guide } from '../../data/guides';
+import { support } from '../../data/site';
+export function getStaticPaths() { return guides.map(guide => ({ params: { slug: guide.slug }, props: { guide } })); }
+const { guide } = Astro.props as { guide: Guide };
+---
+<Base title={`${guide.title} · Hearthboard Displays`} description={guide.description}>
+<div class="container" style="padding-top:35px"><div class="breadcrumb"><a href="/">Displays</a><span>/</span><a href="/docs/">Guides</a><span>/</span><span>{guide.category === 'ink' ? 'Ink' : guide.category === 'frame' ? 'Frame' : 'Ink + Frame'}</span></div></div>
+<div class="container docs-layout"><aside class="docs-sidebar"><h2>SETUP & SUPPORT</h2><nav aria-label="Documentation navigation">{guides.map(item => <a href={`/docs/${item.slug}/`} aria-current={item.slug === guide.slug ? 'page' : undefined}>{item.title}</a>)}</nav></aside><article><header class="article-heading"><div class="eyebrow">{guide.category === 'ink' ? 'HEARTHBOARD INK' : guide.category === 'frame' ? 'HEARTHBOARD FRAME' : 'INK + FRAME'}</div><h1>{guide.title}</h1><p>{guide.description}</p></header><nav class="article-toc" aria-label="On this page">{guide.sections.map(section => <a href={`#${section.id}`}>{section.title}</a>)}</nav><div class="prose">{guide.sections.map(section => <section id={section.id}><h2>{section.title}</h2>{section.paragraphs?.map(text => <p>{text}</p>)}{section.steps && <ol>{section.steps.map(step => <li>{step}</li>)}</ol>}{section.bullets && <ul>{section.bullets.map(item => <li>{item}</li>)}</ul>}{section.code && <pre><code>{section.code}</code></pre>}{section.note && <aside class="notice">{section.note}</aside>}</section>)}</div><div class="related-links"><a href="/docs/">← All guides</a><a href="/releases/">Downloads & releases →</a><a href={support}>Report an issue ↗</a>{guide.slug === 'privacy' && <a href="/assets/Inter-OFL.txt">Inter font license ↗</a>}</div></article></div>
+</Base>
